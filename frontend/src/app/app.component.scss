@@ -1,0 +1,135 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--azul);
+  color: #fff;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+}
+
+.logo circle {
+  fill: #fff;
+}
+
+.logo path {
+  fill: var(--azul);
+}
+
+.institucion,
+.etapa,
+.detalle {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.nombre {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.etapa {
+  opacity: 0.85;
+}
+
+main {
+  flex: 1;
+  width: min(46rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2.5rem 0 3rem;
+  animation: aparecer 0.45s ease;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  line-height: 1.2;
+  color: var(--azul-oscuro);
+}
+
+.resumen {
+  margin: 0 0 1.5rem;
+  color: var(--texto-suave);
+}
+
+.tarjeta {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--gris);
+  border-left: 4px solid var(--azul-claro-intenso);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.tarjeta h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.tarjeta p {
+  margin: 0;
+}
+
+.tarjeta--ok {
+  border-left-color: var(--verde);
+  background: var(--verde-suave);
+}
+
+.detalle {
+  margin-top: 0.6rem;
+  color: var(--texto-suave);
+}
+
+footer {
+  padding: 1rem 1.5rem;
+  background: var(--gris);
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .barra {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main {
+    padding-top: 1.5rem;
+  }
+}

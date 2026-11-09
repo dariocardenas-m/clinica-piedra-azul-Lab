@@ -1,0 +1,41 @@
+<div class="pagina">
+  <header class="barra">
+    <div class="marca">
+      <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" />
+        <path d="M22 12h4v10h10v4H26v10h-4V26H12v-4h10V12z" />
+      </svg>
+      <div>
+        <p class="institucion">Universidad del Cauca</p>
+        <p class="nombre">Clínica Piedra Azul</p>
+      </div>
+    </div>
+    <p class="etapa">Etapa 1 · Preparación</p>
+  </header>
+
+  <main>
+    <h1>Gestión de médicos, pacientes y citas</h1>
+    <p class="resumen">
+      La aplicación ya puede ejecutarse. En las siguientes etapas se agregan la base de
+      datos completa, el inicio de sesión con JWT, los roles y las pantallas de trabajo.
+    </p>
+
+    @if (estadoApi$ | async; as estado) {
+      <section class="tarjeta" [class.tarjeta--ok]="estado.estado === 'operativa'">
+        <h2>Comunicación con el backend</h2>
+        <p>{{ estado.mensaje }}</p>
+        <p class="detalle">Estado recibido: {{ estado.estado }}</p>
+      </section>
+    } @else {
+      <section class="tarjeta">
+        <h2>Comunicación con el backend</h2>
+        <p>Consultando http://localhost:8080/api/salud…</p>
+      </section>
+    }
+  </main>
+
+  <footer>
+    Laboratorio de Ingeniería del Software III · Clínica Piedra Azul
+  </footer>
+  <router-outlet />
+</div>

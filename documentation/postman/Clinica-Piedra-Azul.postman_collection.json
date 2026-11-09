@@ -1,0 +1,358 @@
+{
+  "info": {
+    "name": "Clínica Piedra Azul",
+    "description": "API del segundo parcial. Importar en Postman o Thunder Client con el backend en http://localhost:8080. El login guarda el token en las variables de la colección.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "tokenAdmin", "value": "" },
+    { "key": "tokenPaciente", "value": "" },
+    { "key": "sufijo", "value": "" },
+    { "key": "medicoId", "value": "" },
+    { "key": "pacienteId", "value": "" },
+    { "key": "fechaCita", "value": "" },
+    { "key": "horaCita", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Públicas",
+      "item": [
+        {
+          "name": "Salud",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/salud"
+          }
+        },
+        {
+          "name": "Directorio público de médicos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/medicos/publicos"
+          }
+        },
+        {
+          "name": "Login administrador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('tokenAdmin', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@clinicapiedraazul.test\",\n  \"password\": \"Admin123*\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Login paciente Carlos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('tokenPaciente', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"carlos.perez@clinicapiedraazul.test\",\n  \"password\": \"Paciente123*\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Login con clave incorrecta",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@clinicapiedraazul.test\",\n  \"password\": \"mala\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Administrador",
+      "item": [
+        {
+          "name": "Perfil",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/api/auth/yo"
+          }
+        },
+        {
+          "name": "Listar médicos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/api/medicos"
+          }
+        },
+        {
+          "name": "Verificar cédula existente",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/medicos/verificar-cedula?cedula=1020304050",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "medicos", "verificar-cedula"],
+              "query": [{ "key": "cedula", "value": "1020304050" }]
+            }
+          }
+        },
+        {
+          "name": "Registrar médico con cédula repetida",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Laura\",\n  \"apellidos\": \"Gómez Ríos\",\n  \"cedula\": \"1020304050\",\n  \"especialidad\": \"Medicina general\",\n  \"telefono\": \"3001234567\",\n  \"correo\": \"otra@clinicapiedraazul.test\",\n  \"direccion\": \"Calle 1 # 1-1\",\n  \"estado\": \"ACTIVO\"\n}"
+            },
+            "url": "{{baseUrl}}/api/medicos"
+          }
+        },
+        {
+          "name": "Listar pacientes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/api/pacientes"
+          }
+        },
+        {
+          "name": "Listar todas las citas",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/api/citas"
+          }
+        },
+        {
+          "name": "Mis citas con token de administrador",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/api/citas/mis-citas"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escritura del administrador",
+      "description": "Ejecutar después de Login administrador. Cada alta usa un sufijo distinto para no chocar con datos ya guardados. La cita repetida debe responder 409.",
+      "item": [
+        {
+          "name": "Registrar médico",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const sufijo = String(Date.now()).slice(-8);",
+                  "pm.collectionVariables.set('sufijo', sufijo);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('medicoId', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Demo\",\n  \"apellidos\": \"Escritura\",\n  \"cedula\": \"55{{sufijo}}\",\n  \"especialidad\": \"Medicina familiar\",\n  \"telefono\": \"3001234567\",\n  \"correo\": \"demo.medico.{{sufijo}}@clinicapiedraazul.test\",\n  \"direccion\": \"Calle 4 # 5-10, Popayan\",\n  \"estado\": \"ACTIVO\"\n}"
+            },
+            "url": "{{baseUrl}}/api/medicos"
+          }
+        },
+        {
+          "name": "Registrar paciente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('pacienteId', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Demo\",\n  \"apellidos\": \"Paciente\",\n  \"cedula\": \"66{{sufijo}}\",\n  \"fechaNacimiento\": \"1994-02-11\",\n  \"telefono\": \"3110001122\",\n  \"correo\": \"demo.paciente.{{sufijo}}@clinicapiedraazul.test\",\n  \"direccion\": \"Carrera 7 # 8-12, Popayan\",\n  \"estado\": \"ACTIVO\",\n  \"nombreUsuario\": \"demo{{sufijo}}\",\n  \"password\": \"Paciente123*\"\n}"
+            },
+            "url": "{{baseUrl}}/api/pacientes"
+          }
+        },
+        {
+          "name": "Crear cita",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const sufijo = pm.collectionVariables.get('sufijo') || '00000000';",
+                  "const hora = String(Number(sufijo.slice(0, 2)) % 24).padStart(2, '0');",
+                  "const minuto = String(Number(sufijo.slice(2, 4)) % 60).padStart(2, '0');",
+                  "pm.collectionVariables.set('fechaCita', '2027-06-15');",
+                  "pm.collectionVariables.set('horaCita', hora + ':' + minuto);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": {{pacienteId}},\n  \"medicoId\": {{medicoId}},\n  \"fecha\": \"{{fechaCita}}\",\n  \"hora\": \"{{horaCita}}\",\n  \"motivo\": \"Control de demostracion\",\n  \"estado\": \"PROGRAMADA\",\n  \"observaciones\": \"Creada desde la coleccion\"\n}"
+            },
+            "url": "{{baseUrl}}/api/citas"
+          }
+        },
+        {
+          "name": "Crear cita con el mismo horario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": {{pacienteId}},\n  \"medicoId\": {{medicoId}},\n  \"fecha\": \"{{fechaCita}}\",\n  \"hora\": \"{{horaCita}}\",\n  \"motivo\": \"Control de demostracion\",\n  \"estado\": \"PROGRAMADA\",\n  \"observaciones\": \"Debe responder 409\"\n}"
+            },
+            "url": "{{baseUrl}}/api/citas"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Paciente",
+      "item": [
+        {
+          "name": "Mis citas",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }],
+            "url": "{{baseUrl}}/api/citas/mis-citas"
+          }
+        },
+        {
+          "name": "Listar pacientes con token de paciente",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }],
+            "url": "{{baseUrl}}/api/pacientes"
+          }
+        },
+        {
+          "name": "Listar médicos con token de paciente",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }],
+            "url": "{{baseUrl}}/api/medicos"
+          }
+        },
+        {
+          "name": "Listar todas las citas con token de paciente",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenPaciente}}" }],
+            "url": "{{baseUrl}}/api/citas"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sin token",
+      "item": [
+        {
+          "name": "Médicos administrativos sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/medicos"
+          }
+        },
+        {
+          "name": "Pacientes sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/pacientes"
+          }
+        },
+        {
+          "name": "Citas sin token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/citas"
+          }
+        }
+      ]
+    }
+  ]
+}

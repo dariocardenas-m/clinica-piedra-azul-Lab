@@ -1,0 +1,14 @@
+# Copia este archivo como application-local.properties en la carpeta backend.
+# Ese archivo está en .gitignore y no debe subirse a Git.
+#
+# Usa el usuario con el que entras a MySQL Workbench.
+# Si tu usuario es root, deja root y escribe la contraseña que definiste
+# al instalar MySQL.
+
+spring.datasource.url=jdbc:mysql://localhost:3306/clinica_piedra_azul?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Bogota&characterEncoding=UTF-8
+spring.datasource.username=root
+spring.datasource.password=ESCRIBE_AQUI_LA_CONTRASENA_DE_MYSQL
+
+# Cadena de al menos 32 caracteres. No uses este ejemplo en un servidor real.
+app.jwt.secret=REEMPLAZA_POR_UNA_CADENA_DE_AL_MENOS_32_CARACTERES
+app.jwt.expiration-ms=7200000

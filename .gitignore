@@ -1,0 +1,16 @@
+# Secretos locales: nunca deben versionarse.
+backend/application-local.properties
+**/.env
+
+# Compilación y dependencias.
+backend/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Entornos de desarrollo.
+.idea/
+.vscode/
+*.iml
+*.log
+.DS_Store
