@@ -2,6 +2,13 @@
 
 Aplicación web académica para gestionar información básica de una clínica. Incluye un directorio público de médicos, inicio de sesión y funciones de administración para médicos, pacientes y citas. Los pacientes pueden consultar sus propias citas.
 
+## Información académica
+
+- **Materia:** Laboratorio de Software III
+- **Universidad:** Universidad del Cauca
+- **Periodo académico:** 2026-2
+- **Autores:** Carlos Eduardo Dorado Joaqui y Dario Alexander Cardenas Guerrero
+
 ## Tecnologías
 
 - **Frontend:** Angular 22, TypeScript, HTML y CSS.
